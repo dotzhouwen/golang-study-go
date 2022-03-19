@@ -1,0 +1,25 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func AfterDuration(d time.Duration) <-chan struct{} {
+	c := make(chan struct{}, 1)
+	go func() {
+		time.Sleep(d)
+		c <- struct{}{}
+	}()
+	return c
+}
+
+func main() {
+	fmt.Println("hi")
+	<-AfterDuration(time.Second)
+
+	fmt.Println("Hello")
+	<-AfterDuration(time.Second)
+
+	fmt.Println("Bye")
+}
