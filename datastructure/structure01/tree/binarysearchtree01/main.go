@@ -42,6 +42,57 @@ func midOrderTraverse(root *Node) {
 	midOrderTraverse(root.Right)
 }
 
+func (tree *BinarySearchTree) Delete(data int) error {
+	if tree.root == nil {
+		return errors.New("二叉树为空")
+	}
+	p := tree.root
+	var pp *Node = nil
+
+	for p != nil && p.Data.(int) != data {
+		pp = p
+		if data > p.Data.(int) {
+			p = p.Right
+		} else {
+			p = p.Left
+		}
+	}
+
+	if p == nil {
+		return errors.New("待删除结点不存在")
+	}
+
+	if p.Left != nil && p.Right != nil {
+		minP := p.Right
+		minPP := p
+		for minP.Left != nil {
+			minPP = minP
+			minP = minP.Left
+		}
+		p.Data = minP.Data
+		p = minP
+		pp = minPP
+	}
+
+	var child *Node
+	if p.Left != nil {
+		child = p.Left
+	} else if p.Right != nil {
+		child = p.Right
+	} else {
+		child = nil
+	}
+
+	if pp == nil {
+		tree.root = nil
+	} else if pp.Left == p {
+		pp.Left = child
+	} else if pp.Right == p {
+		pp.Right = child
+	}
+	return nil
+}
+
 func (tree *BinarySearchTree) Insert(data interface{}) error {
 	var value int
 	var ok bool
@@ -102,8 +153,21 @@ func main() {
 
 	fmt.Println("中序遍历二叉树")
 	midOrderTraverse(tree.root)
+	fmt.Println()
 
 	fmt.Println("查找值为3的节点")
 	node := tree.Find(3)
 	fmt.Printf("%v\n", node)
+
+	tree.Delete(4)
+	midOrderTraverse(tree.root)
+	fmt.Println()
+
+	tree.Delete(3)
+	midOrderTraverse(tree.root)
+	fmt.Println()
+
+	tree.Delete(1)
+	midOrderTraverse(tree.root)
+	fmt.Println()
 }
