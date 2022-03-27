@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 func minFallingPathSum(grid [][]int) int {
@@ -16,21 +17,12 @@ func minFallingPathSum(grid [][]int) int {
 
 	for i := 1; i < len(f); i++ {
 		for j := 0; j < len(f[i]); j++ {
-			if j == 0 {
-				minValue := arrayMin(f[i-1][1:])
-				f[i][j] = minValue + grid[i][j]
-
-			} else if j == len(f[i])-1 {
-				minValue := arrayMin(f[i-1][:len(f[i])-1])
-				f[i][j] = minValue + grid[i][j]
-
-			} else {
-				var tmp []int
-				tmp = append(tmp, f[i-1][:j]...)
-				tmp = append(tmp, f[i-1][j+1:len(f[i])]...)
-
-				minValue := arrayMin(tmp)
-				f[i][j] = minValue + grid[i][j]
+			f[i][j] = math.MaxInt
+			val := grid[i][j]
+			for p := 0; p < len(f[i]); p++ {
+				if j != p {
+					f[i][j] = int(math.Min(float64(f[i][j]), float64(f[i-1][p]+val)))
+				}
 			}
 		}
 	}
