@@ -2,6 +2,7 @@ package main
 
 import (
 	stack2 "awesomeProject/algorithm/dfs/dfs01/stack"
+	"awesomeProject/leetcode/util"
 	"fmt"
 )
 
@@ -31,6 +32,36 @@ func preorderTraversal2(root *TreeNode) []int {
 		}
 		node = stack.Pop().(*TreeNode)
 		node = node.Right
+	}
+
+	return res
+}
+
+/**
+中序遍历，非递归
+*/
+func inorderTraversal(root *TreeNode) []int {
+	res := make([]int, 0)
+	if root == nil {
+		return res
+	}
+
+	stack := util.NewStack()
+	p := root
+	for p != nil {
+		stack.Push(p)
+		p = p.Left
+	}
+
+	for !stack.Empty() {
+		node := stack.Pop().(*TreeNode)
+		res = append(res, node.Val)
+		p = node.Right
+
+		for p != nil {
+			stack.Push(p)
+			p = p.Left
+		}
 	}
 
 	return res
@@ -85,6 +116,6 @@ func recoverFromPreorder(traversal string) *TreeNode {
 
 func main() {
 	tree := CreateTree()
-	traversal := preorderTraversal2(tree)
+	traversal := inorderTraversal(tree)
 	fmt.Println(traversal)
 }
