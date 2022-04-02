@@ -12,6 +12,47 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+type Node struct {
+	Val      int
+	Children []*Node
+}
+
+func preorder(root *Node) []int {
+	collector := make([]int, 0)
+	preorderHelper(root, &collector)
+	return collector
+}
+
+func preorderHelper(root *Node, collector *[]int) {
+	if root != nil {
+		*collector = append(*collector, root.Val)
+		children := root.Children
+		if len(children) > 0 {
+			for _, child := range children {
+				preorderHelper(child, collector)
+			}
+		}
+	}
+}
+
+func postorder(root *Node) []int {
+	collector := make([]int, 0)
+	postorderHelper(root, &collector)
+	return collector
+}
+
+func postorderHelper(root *Node, collector *[]int) {
+	if root != nil {
+		children := root.Children
+		if len(children) > 0 {
+			for _, child := range children {
+				postorderHelper(child, collector)
+			}
+		}
+		*collector = append(*collector, root.Val)
+	}
+}
+
 /**
 二叉树的前序遍历 非递归写法
 */
@@ -65,6 +106,14 @@ func inorderTraversal(root *TreeNode) []int {
 	}
 
 	return res
+}
+
+func postorderTraversal(root *TreeNode) []int {
+	res := make([]int, 0)
+	if root == nil {
+		return res
+	}
+	return nil
 }
 
 func preorderTraversal(root *TreeNode) []int {
