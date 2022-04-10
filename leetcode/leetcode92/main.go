@@ -2,7 +2,26 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
+
+/**
+子数组最大平均数 I 滑动窗口2
+*/
+func findMaxAverage2(nums []int, k int) float64 {
+	sum := 0
+	for i := 0; i < k; i++ {
+		sum += nums[i]
+	}
+	i := k
+	temp := sum
+	for i < len(nums) {
+		temp = temp + nums[i] - nums[i-k]
+		sum = int(math.Max(float64(sum), float64(temp)))
+		i++
+	}
+	return float64(sum) / float64(k)
+}
 
 /**
 子数组最大平均数 I 滑动窗口
@@ -42,6 +61,6 @@ func numsSum(nums []int, left int, right int) int {
 func main() {
 	nums := []int{1, 12, -5, -6, 50, 3}
 	k := 4
-	average := findMaxAverage(nums, k)
+	average := findMaxAverage2(nums, k)
 	fmt.Println(average)
 }
