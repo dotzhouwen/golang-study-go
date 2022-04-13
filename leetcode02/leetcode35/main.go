@@ -5,7 +5,7 @@ import "fmt"
 /**
 两个列表的最小索引总和
 */
-func findRestaurant(list1 []string, list2 []string) []string {
+func findRestaurant(list1 []string, list2 []string) []string { /**/
 	hash1 := make(map[string]int, 0)
 	for k, v := range list1 {
 		hash1[v] = k
